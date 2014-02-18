@@ -1,0 +1,8 @@
+Content\bg.xnb
+Content\player.xnb
+Content\aim.xnb
+Content\flashlightbeam-mul.xnb
+Content\candle.xnb
+Content\movementmap.xnb
+Content\layer2.xnb
+Content\layer3.xnb

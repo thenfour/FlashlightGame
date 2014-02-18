@@ -1,0 +1,14 @@
+C:\root\dev\2010\Room\bin\x86\Release\Content\bg.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Content\player.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Content\aim.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Content\flashlightbeam-mul.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Content\candle.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Content\movementmap.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Content\layer2.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Content\layer3.xnb
+C:\root\dev\2010\Room\bin\x86\Release\Room.exe
+C:\root\dev\2010\Room\bin\x86\Release\Room.pdb
+C:\root\dev\2010\Room\obj\x86\Release\ResolveAssemblyReference.cache
+C:\root\dev\2010\Room\obj\x86\Release\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\root\dev\2010\Room\obj\x86\Release\Room.exe
+C:\root\dev\2010\Room\obj\x86\Release\Room.pdb

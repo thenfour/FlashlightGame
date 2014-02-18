@@ -1,0 +1,1 @@
+c:\root\dev\2010\Room\Content\obj\x86\Debug\ResolveAssemblyReference.cache

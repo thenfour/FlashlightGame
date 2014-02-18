@@ -1,0 +1,265 @@
+﻿TODO:
+- corpse bride
+- the others
+x softer x/y movement
+x full-screen (won't be functional until scaling to window is done)
+x scrolling
+	x account for aiming
+x wrong aspect viewport sensitivity
+x aim for 800x600
+x tiling / composite layers
+x parallax foreground objects
+	x background also
+x support for pixel shader framework
+	x chained pixel shaders
+- animation support
+- real hit test support for player
+- simulated 3D movement
+	- movement angles - needs design. think about the case of up being down, for up perspective
+		- i guess i should have an editor, and an interpolation between regions.
+		class MovementRegion { topangle, bottomangle, leftangle, rightangle }
+		of course this limits me to 
+	- movement distance scaling
+	- player scaling (flashlight too?)
+	- diagonal movement with correct distance
+	- moving between rooms
+- object interaction highlighting
+- EFFECTS
+	- lens projections
+	- particles (dust, snow, lighted sparks from a breaker switch, dust coming from a fireplace)
+	- animation (wind blowing trees)
+	- pixel shader (underwater effect - blue tint + wave)
+	- dynamic object shadows (move+skew+ambient)
+	- transition effects
+- sound effects
+
+
+F1: turn flashlight on / off
+F2: turn candle off
+F3: show movement map
+F4: stop applying lighting
+F5: cycle level
+
+
+
+
+- animation support...
+we need to create a limb system and corresponding 
+
+class PartToRender
+{
+	point origin;
+	float rotation;
+	Texture2D texture;
+}
+
+void DrawCharacter
+{
+	foreach(Param)
+	{
+		setparam(characterScript, variable);
+	}
+	foreach(Part in characterScript.GetRenderedParts(gameTime))
+	{
+		// render it.
+	}
+}
+
+List<PartToRender> GetPartsToRender()
+{
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////// images (provides attributes for images)
+image main_LeftArm_o000_l000_1.png { anchor (30,152) }
+image main_LeftArm_o000_l000_1.png { anchor (30,152) }
+image main_LeftArm_o000_l000_1.png { anchor (30,152) }
+	
+[loop:static, duration:800]
+gesture LeftArmFL_Overhead0_Look0(lookDirection[0-360])
+{
+	lookDirection(0,15) = mc\fa\301.png;
+	lookDirection(15,32) = mc\fa\302.png;
+	lookDirection(32,64) = mc\fa\303.png;
+}
+
+
+/////////////////////////////////////////////////////
+character MainCharacter(hasFlashlight[0-1], moveDirection[0-360], lookDirection[0-360], overheadAngle[0-360])
+{
+	// define the movements for this character
+	animation Walking_cam0_aim225
+	{
+		overheadAngle(0-360) && moveDirection(225-315)
+		{
+			bodypart Body [anchor(x,x), order(front)]
+			{
+				bodypart Torso [anchor(x,x), order(front)]
+				{
+					bodypart Head [anchor(x,x), order(front)]
+					{
+						lookDirection(0-45)
+						{
+							//
+						}
+					}
+					bodypart LeftShoulder [anchor(x,x), order(front)]
+					{
+						bodypart LeftArm [anchor(x,x), order(front)]
+						{
+						}
+					}
+					bodypart RightShoulder [anchor(x,x), order(front)]
+					{
+						bodypart RightArm [anchor(x,x), order(front)]
+						{
+						}
+					}
+				}
+				bodypart Legs [anchor(x,x), order(front)]
+				{
+				}
+			}
+		}
+	}
+	
+	///////////////////////////////////////////////////// (ties or gestures together in a hierarchy, building from images -> whole body.
+	[loop:static]
+	gesture LeftArmFL_Overhead0_Look0(lookDirection[0-360])
+	{
+		lookDirection(0,15) = mc\fa\301.png;
+		lookDirection(15,32) = mc\fa\302.png;
+		lookDirection(32,64) = mc\fa\303.png;
+	}
+
+	[loop:forever, duration:800]
+	gesture Legs_Overhead0_Dir0()
+	{
+		mc\fa\301.png
+		mc\fa\302.png
+		mc\fa\303.png
+		mc\fa\304.png
+	}
+
+	///////////////////////////////////////////////////// glues gestures together to create a whole body, and branches permutations of variables
+	gesture LeftArm_Flashlight
+	{
+	}
+	
+	gesture LeftArm
+	{
+	}
+	
+	[loop:forever]
+	bodygesture Standing
+	{
+		lookDirection = (0-360)
+		moveDirection = (0-360)
+	}
+
+	[loop:once, oncompleted:WalkLeft]
+	bodygesture StartWalkingLeft
+	{
+	}
+
+	[loop:forever]
+	bodygesture WalkLeft
+	{
+		overheadAngle = (0-360)
+		lookDirection = (0-360)
+		moveDirection = (0-360)
+		hasFlashlight = true
+		{
+			LeftArm: Flashlight_PlayerLeft_Overhead15(lookDirection);
+			RightArm: Flashlight_PlayerRight();
+		}
+		hasFlashlight = false
+		{
+			LeftArm: NoFlashlight_PlayerLeft_Overhead15;
+			RightArm: RightArm_Overhead15_Look15;
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+required animation ACTION scripts:
+- start walking
+- stop walking
+- walking
+- aiming w/ flashlight
+- aiming w/o flashlight
+
+- i would prefer in 15, 45, 75, 105, 135, 165, 195 
+
+
+multi input pixel shaders
+http://blogs.msdn.com/greg_schechter/archive/2008/09/16/introducing-multi-input-shader-effects.aspx
+
+pixel shader samples
+BandedSwirl, Bloom, BrightExtract, ColorKeyAlpha, ColorTone, ContrastAdjust,
+DirectionalBlur, Embossed, Gloom, GrowablePoissonDiskEffect, InvertColor,
+LightStreak, Magnify, Monochrome, Pinch, Pixelate, Ripple, Sharpen, SmoothMagnify, Swirl, Tone, Toon, and ZoomBlur 
+http://www.codeplex.com/wpffx
+
+Beautiful room images:
+Peter Baas: http://www.bb-fotografie.nl/
+http://forum.belgiumdigital.com/f70/hdr-oude-belgacom-en-zee-internaat-nieuwpoort-bad-231389.html
+
+more abandoned room images:
+http://www.mikesblender.com/indexblog225.htm
+
+Toggling full screen mode
+http://blog.maragnus.com/toggling-full-screen-in-xna/
+
+
+// custom blend modes for sprites
+// http://blogs.msdn.com/shawnhar/archive/2007/01/02/spritebatch-and-custom-blend-modes.aspx
+
+// pretty good 2D tutorial for all basic stuff: (artillery game)
+// http://www.riemers.net/eng/Tutorials/XNA/Csharp/series2d.php
+
+// skew transform matrix:
+// http://www.gamedev.net/community/forums/topic.asp?topic_id=526228&whichpage=1&#3410953
+
+// transformation matrices:
+// http://www.senocular.com/flash/tutorials/transformmatrix/
+
+// lighting in 2D example (RTL)
+// http://www.talula.demon.co.uk/rtl/index.html
+
+// xna dynamiclighting 2D example
+// http://www.catalinzima.com/?page_id=313
+
+// 2D shadows - extremely similar to what I'm trying to do with skew, but can't get any info..
+// http://www.vfxtalk.com/forum/generate-fake-2d-shadows-t8811.html?s=aca604389f7220c187a093d4067a799a&amp;
+
+// 2D shadows - character shadows , very appropriate
+// http://forums.xna.com/forums/p/26878/147581.aspx
+
+// castle 2D shadow demo. THIS IS EXACTLY WHAT I WANT TO LOOK LIKE,
+// except they use normal maps & pixel shaders. this is way too much work for our scenario.
+// http://www.asantee.net/gamespace/
+
+// 2x multiply blending mode...
+// http://msdn.microsoft.com/en-us/library/bb976070.aspx
+
+// '" stamping holes in the image" 
+// http://www.gamedev.net/community/forums/topic.asp?topic_id=532775&whichpage=1&#3445444
+
+// layers:
+// foreach(scenery layer)
+// {
+//   [foreground objects are rendered as stencil black]
+//   - scenery shadow (scale + skew (for x offset only) + boundingalpha + abstract shadow)
+//   - scenery
+//   - alternate scenery layer (for example a highlighted object)
+//   - particles
+//   - light effects for this layer, for example flickering lights or 
+// }
+
+// C++ examples of certain game elements
+- scrolling / wipes / particles / effects...
+http://www.gameengineer.net/samples-indielib.html
